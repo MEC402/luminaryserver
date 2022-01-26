@@ -1,6 +1,5 @@
 import socket
 from logger import Logger
-from datetime import datetime
 
 
 class WallClient():
