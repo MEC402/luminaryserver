@@ -17,3 +17,10 @@ List of key components:
   - responds to requests to launch apps on specific wall machines.
   - listen to touches on the wall from the wall server and forward to required client service.
 - install.sh - copy files to necessary machines and targets.
+
+Additional components:
+-  touchsimulator.py - a lightweight python script that reads mouse and keyboard input
+  - reads mouse click position
+  - sends click data to wallclient.py
+- logger.py
+  - creates a generic logger for use by other components
