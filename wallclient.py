@@ -1,7 +1,6 @@
 import socket
-import pyautogui
 from logger import create_logger
-from pynput.mouse import Controller
+from pynput.mouse import Controller, Button
 
 class WallClient():
   def __init__(self,ip,port) -> None:
@@ -27,25 +26,17 @@ class WallClient():
   def click(self, msg) -> None:
     (x, y, pressed) = msg.split(" ")
     (s_x, s_y) = self.scale_coordinates(int(x),int(y))
-
-    # (s_x, s_y) = self.scale_coordinates(int(x),int(y))
-    # if pressed == True:
-    #   pass
-    #   pyautogui.moveTo(x=s_x,y=s_y)
-    # else:
-    #   pyautogui.dragTo(x=s_x,y=s_y, button='left')
-    if pressed == True:
-      pyautogui.leftClick(x=s_x, y=s_y)
-      self.prev_pos = (s_x, s_y)
+    if pressed == 'True':
+      self.mouse.press(Button.left)
     else:
-      (prev_x, prev_y) = self.prev_pos
-      pyautogui.moveTo(x=prev_x, y=prev_y)
-      pyautogui.dragTo(x=s_x, y=s_y, button='left')
+      self.mouse.position = (s_x,s_y)
+      self.mouse.release(Button.left)
 
   def move(self, msg) -> None:
     (x, y) = msg.split(" ")
     (s_x, s_y) = self.scale_coordinates(int(x),int(y))
-    pyautogui.moveTo(x=s_x,y=s_y)    
+    self.mouse.position = (s_x,s_y) 
+        
 
   def scale_coordinates(self,x,y):
     # Do math here
