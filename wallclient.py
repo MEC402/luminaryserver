@@ -1,52 +1,70 @@
+from ipaddress import ip_address
 import socket
+import sys
 from logger import create_logger
 from pynput.mouse import Controller, Button
+from threading import Timer
+from time import time_ns
+from math import floor
 
 class WallClient():
   def __init__(self,ip,port) -> None:
     self.logger = create_logger(__name__)
+    self.timer = Timer(.125,self.timeout)
     self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     self.sock.bind((ip,port))
     self.mouse = Controller()
-    self.prev_pos = (None, None)
     self.running = False
+    self.started = 0
+    self.lasttime = 0
   
   def start(self) -> None:
     self.logger.debug('Starting Wall Client')
     self.running = True
     while self.running:
       (data, addr) = self.sock.recvfrom(1024)
-      (action, msg) = data.decode('utf-8').split(":")
-      self.logger.debug(f"[Message]:{action} {msg} from {addr}")
-      match action:
-        case 'exit': self.running = False
-        case 'click': self.click(msg)
-        case 'move': self.move(msg)
-  
-  def click(self, msg) -> None:
-    (x, y, pressed) = msg.split(" ")
-    (s_x, s_y) = self.scale_coordinates(int(x),int(y))
-    if pressed == 'True':
-      self.mouse.press(Button.left)
-    else:
-      self.mouse.position = (s_x,s_y)
-      self.mouse.release(Button.left)
+      msg = data.decode('utf-8')
+      #self.logger.debug(f"[Message]:{msg} from {addr}")
+      self.handle(msg)
 
-  def move(self, msg) -> None:
-    (x, y) = msg.split(" ")
-    (s_x, s_y) = self.scale_coordinates(int(x),int(y))
-    self.mouse.position = (s_x,s_y) 
+  def handle(self, msg) -> None:
+    (x, y, panel) = msg.split(" ")
+    # xscale factor - these are all guesses
+    xscale = 680
+    yscale = 1234
+    yoffset = -344
+    dragtime = 1  # this is a wild guess in nanoseconds
+
+    #calculate the mouse position
+    #we assume that x,y are values in the range of 0 to 1
+    px = float(x)*xscale + (int(panel)-1) * xscale
+    py = float(y)*yscale + yoffset
+    self.mouse.position = (px,py)
+
+    if self.started == 0:
+      self.timer.start()
+      self.started = 1
+      self.mouse.press(Button.left) # put this in when ready
+
+    #handle drag event -delay the timeout with every press
+    currenttime = time_ns()
+    if ((currenttime - self.lasttime) < dragtime):
+      self.timer.cancel()
+      self.timer = Timer(.125,self.timeout)
+      self.timer.start()
+    self.lasttime = currenttime   
+
+  def timeout(self):
+    self.mouse.release(Button.left)
+    self.timer = Timer(.125, self.timeout)
+    self.started = 0
+    self.lasttime = 0
         
-
-  def scale_coordinates(self,x,y):
-    # Do math here
-
-    return (x,y)
-
 if __name__ == "__main__":
-  hostname = socket.gethostname()
-  listener_ip = socket.gethostbyname(hostname)
-  listener_port = 7200
-  
-  client = WallClient(listener_ip, listener_port)
+  args = sys.argv
+  ip_address = "10.31.11.138"
+  if len(args) > 1:
+    ip_address = "10.31.11.193"
+  listener_port = 3000
+  client = WallClient(ip_address, listener_port)
   client.start()

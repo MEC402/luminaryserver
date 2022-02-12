@@ -5,6 +5,7 @@ from pythontuio import TuioListener
 from threading import Thread, Timer
 from pynput.mouse import Controller, Button
 import time
+import socket
  
 class MyListener(TuioListener):
  
@@ -14,17 +15,28 @@ class MyListener(TuioListener):
         self.started = 0
         self.lasttime = 0
         self.panel=apanel
- 
- 
-    def add_tuio_cursor(self, cursor: Cursor):
-        print("detect a new Cursor")
-    (...)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
  
     def update_tuio_cursor(self, cursor: Cursor):
         msg = cursor.get_message().params        
         if 'set' in msg:
-            self.handle_touch(params=msg)
+            (_, _, x, y, _, _, _) = msg
+            panel = self.panel if self.panel < 7 else  self.panel - 6
+            panel = panel if panel < 6 else panel - 5
+            coordinate_msg = f"{x} {y} {panel}"
+            self.forward_msg(coordinate_msg)
  
+    def forward_msg(self, msg) -> None:
+        target_ip = -1
+        if self.panel < 7:
+            target_ip = "10.31.11.138"
+        elif self.panel < 13:
+            target_ip = "10.31.11.193"
+        else:
+            target_ip = "10.31.11.140"
+        self.sock.sendto(msg.encode('utf-8'), (target_ip, 3000))
+
+
     def handle_touch(self, params):
         (_, _, x, y, _, _, _) = params
 
@@ -69,7 +81,7 @@ if __name__ == "__main__":
     # we will need a client for every individual panel
 
     # If pulling be sure to modify tuioclient/listener to disable print statements
-    for i in range(1,7):
+    for i in range(1,12):
         client = TuioClient(("10.31.11.138",3000+i))
         #client = TuioClient(("localhost",3003))
         t = Thread(target=client.start)
