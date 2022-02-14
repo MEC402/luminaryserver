@@ -64,7 +64,10 @@ if __name__ == "__main__":
   args = sys.argv
   ip_address = "10.31.11.138"
   if len(args) > 1:
-    ip_address = "10.31.11.193"
+    if args[1] == 'm':
+      ip_address = "10.31.11.193"
+    elif args[1] == 'r':
+      ip_address = "10.31.11.139" 
   listener_port = 3000
   client = WallClient(ip_address, listener_port)
   client.start()

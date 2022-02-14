@@ -21,8 +21,11 @@ class MyListener(TuioListener):
         msg = cursor.get_message().params        
         if 'set' in msg:
             (_, _, x, y, _, _, _) = msg
-            panel = self.panel if self.panel < 7 else  self.panel - 6
-            panel = panel if panel < 6 else panel - 5
+            panel = self.panel
+            if panel >= 6 and panel < 11:
+                panel -= 6
+            elif panel >= 11:
+                panel -= 11
             coordinate_msg = f"{x} {y} {panel}"
             self.forward_msg(coordinate_msg)
  
@@ -33,7 +36,7 @@ class MyListener(TuioListener):
         elif self.panel < 13:
             target_ip = "10.31.11.193"
         else:
-            target_ip = "10.31.11.140"
+            target_ip = "10.31.11.139"
         self.sock.sendto(msg.encode('utf-8'), (target_ip, 3000))
 
 
@@ -81,7 +84,7 @@ if __name__ == "__main__":
     # we will need a client for every individual panel
 
     # If pulling be sure to modify tuioclient/listener to disable print statements
-    for i in range(1,12):
+    for i in range(1,19):
         client = TuioClient(("10.31.11.138",3000+i))
         #client = TuioClient(("localhost",3003))
         t = Thread(target=client.start)
