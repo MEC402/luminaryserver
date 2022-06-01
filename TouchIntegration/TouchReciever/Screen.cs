@@ -23,12 +23,7 @@ namespace TouchReceiver
 
         [DllImport("user32.dll")]
         private static extern int GetSystemMetrics(SystemMetric smIndex);
-
-        [DllImport("gdi32.dll")]
-        private static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
-
  
-
         public static int GetXScreenResolution()
         {
             return GetSystemMetrics(SystemMetric.SM_CXSCREEN);
