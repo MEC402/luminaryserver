@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchProxy", "TouchProxy\TouchProxy.csproj", "{E90168D7-DADF-4709-8BC6-A5C094E3ECAE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchReceiver", "TouchReciever\TouchReceiver.csproj", "{D9E8D17E-9177-49B1-AF45-559F3783A5FE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUIO_LIB", "TUIO11_NET-master\TUIO_LIB.csproj", "{3CBF7D4A-CE06-490D-80DA-580D02C268DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchReceiver", "TouchReciever\TouchReceiver.csproj", "{0AFD3451-E3D7-478D-9619-103F04CD33EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		{E90168D7-DADF-4709-8BC6-A5C094E3ECAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E90168D7-DADF-4709-8BC6-A5C094E3ECAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E90168D7-DADF-4709-8BC6-A5C094E3ECAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9E8D17E-9177-49B1-AF45-559F3783A5FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9E8D17E-9177-49B1-AF45-559F3783A5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9E8D17E-9177-49B1-AF45-559F3783A5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9E8D17E-9177-49B1-AF45-559F3783A5FE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3CBF7D4A-CE06-490D-80DA-580D02C268DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3CBF7D4A-CE06-490D-80DA-580D02C268DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CBF7D4A-CE06-490D-80DA-580D02C268DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CBF7D4A-CE06-490D-80DA-580D02C268DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AFD3451-E3D7-478D-9619-103F04CD33EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AFD3451-E3D7-478D-9619-103F04CD33EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AFD3451-E3D7-478D-9619-103F04CD33EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AFD3451-E3D7-478D-9619-103F04CD33EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
