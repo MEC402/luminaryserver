@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchProxy", "TouchProxy\TouchProxy.csproj", "{E90168D7-DADF-4709-8BC6-A5C094E3ECAE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchReceiver", "TouchReciever\TouchReceiver.csproj", "{D9E8D17E-9177-49B1-AF45-559F3783A5FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUIO_LIB", "TUIO11_NET-master\TUIO_LIB.csproj", "{3CBF7D4A-CE06-490D-80DA-580D02C268DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E90168D7-DADF-4709-8BC6-A5C094E3ECAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E90168D7-DADF-4709-8BC6-A5C094E3ECAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E90168D7-DADF-4709-8BC6-A5C094E3ECAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E90168D7-DADF-4709-8BC6-A5C094E3ECAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9E8D17E-9177-49B1-AF45-559F3783A5FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9E8D17E-9177-49B1-AF45-559F3783A5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9E8D17E-9177-49B1-AF45-559F3783A5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9E8D17E-9177-49B1-AF45-559F3783A5FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CBF7D4A-CE06-490D-80DA-580D02C268DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CBF7D4A-CE06-490D-80DA-580D02C268DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CBF7D4A-CE06-490D-80DA-580D02C268DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CBF7D4A-CE06-490D-80DA-580D02C268DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE69E1FF-E55A-43C6-98C4-960AC410E4E4}
+	EndGlobalSection
+EndGlobal
