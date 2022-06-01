@@ -14,7 +14,7 @@ namespace TouchProxy
     /// </summary>
     public class ProxyService
     {
-        private TuioClient[] clients;
+        private TuioClient[] _clients;
 
         /// <summary>
         /// Constructor for the Service object
@@ -23,13 +23,13 @@ namespace TouchProxy
         {
             var portMap = ReadConfig();
             var keys = portMap.Keys.ToArray();
-            clients = new TuioClient[keys.Length];
+            _clients = new TuioClient[keys.Length];
             for (int i = 0; i < keys.Length; i++)
             {
                 var client = new TuioClient(keys[i]);
                 var listener = new Listener(i+1, portMap[keys[i]].Address, portMap[keys[i]].Port);
                 client.addTuioListener(listener);
-                clients[i] = client;
+                _clients[i] = client;
             }
         }
 
@@ -39,7 +39,7 @@ namespace TouchProxy
         /// </summary>
         public void Start()
         {
-            foreach (var client in clients)
+            foreach (var client in _clients)
             {
                 client.connect();
             }
@@ -51,7 +51,7 @@ namespace TouchProxy
         /// </summary>
         public void Stop()
         {
-            foreach (var client in clients)
+            foreach (var client in _clients)
             {
                 client.disconnect();
             }
@@ -126,7 +126,6 @@ namespace TouchProxy
         {
             var packet = new OSCMessage("/tuio/2Dcur");
             packet.Append(panelNumber);
-            //packet.Append(tcur.TuioTime);
             packet.Append(tcur.X);
             packet.Append(tcur.Y);            
             transmitter.Send(packet);
