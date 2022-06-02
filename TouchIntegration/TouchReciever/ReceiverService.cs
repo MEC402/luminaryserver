@@ -6,6 +6,10 @@ using System.Diagnostics;
 
 namespace TouchReceiver
 {
+    /// <summary>
+    /// Object representation of the config file
+    /// used by the ReceiverService.
+    /// </summary>
     public class Config
     {
         public int ReceiverPort { get; set; }
@@ -100,7 +104,7 @@ namespace TouchReceiver
         /// <summary>
         /// Processes messages sent from the TouchProxy
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">Message sent from the TouchProxy</param>
         private void ProcessMessage(OSCMessage message)
         {
             // Return if invalid message
@@ -127,6 +131,12 @@ namespace TouchReceiver
             HandleClick(sX, sY);
         }
 
+        /// <summary>
+        /// Handles preforming a left/right click
+        /// and moving/dragging the cursor
+        /// </summary>
+        /// <param name="x">Scaled X coordinate of the touch location</param>
+        /// <param name="y">Scaled Y coordinate of the touch location</param>
         private void HandleClick(int x, int y)
         {
             var curPos = new Point(x, y);
@@ -161,6 +171,11 @@ namespace TouchReceiver
             _lastTouchLocation = curPos;
         }
 
+        /// <summary>
+        /// Releases the left mouse click when
+        /// the timer expires.
+        /// </summary>
+        /// <param name="source"></param>
         private void TimerExpired(object? source)
         {
             lock (_lock)
@@ -172,6 +187,13 @@ namespace TouchReceiver
             }
         }
 
+        /// <summary>
+        /// Calculates if two points are within a specified distance
+        /// </summary>
+        /// <param name="p1">Point one</param>
+        /// <param name="p2">Point two</param>
+        /// <param name="distance">Distance between the two points</param>
+        /// <returns></returns>
         private static bool PointsWithinDistance(Point p1, Point p2, int distance)
         {
             int dx = p1.X - p2.X;
@@ -179,6 +201,16 @@ namespace TouchReceiver
             return (dx*dx + dy*dy) < distance * distance;
         }
 
+        /// <summary>
+        /// Scales the x and y coordinates from the proxy
+        /// to account for panel foil size and what panel
+        /// they came from.
+        /// </summary>
+        /// <param name="panelNumber">The panel number the coordinates came from</param>
+        /// <param name="inX">Normalized x coordinate from the proxy</param>
+        /// <param name="inY">Normalized y coordinate from the proxy</param>
+        /// <param name="outX">Scaled x coordinate</param>
+        /// <param name="outY">Scaled y coordinate</param>
         private void ScaleCoordinates(int panelNumber, double inX, double inY, out int outX, out int outY)
         {
             var xScreenDimension = Screen.GetXScreenResolution();

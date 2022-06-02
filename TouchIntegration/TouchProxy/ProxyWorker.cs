@@ -20,6 +20,12 @@ namespace TouchProxy
             _service = service;
         }
 
+        /// <summary>
+        /// Starts the proxy service that will handle receiving and proxying
+        /// TUIO events.
+        /// </summary>
+        /// <param name="cancellationToken">Token that is used to determine whether the worker should stop</param>
+        /// <returns></returns>
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             try

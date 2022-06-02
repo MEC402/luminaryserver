@@ -9,12 +9,12 @@ they correctly match the dimensions of the host pc. One thing to note, is that
 the x/y values will range from 0.0 - 1.0, thus they need to be denormalized
 before scaling them. To denormalize, the equations we will use are:
 
-x * ((PanelNumber - PanelOffset) / PanelCount) * xScreenDimension / ScreenScale
-y * ((PanelNumber - PanelOffset) / PanelCount) * yScreenDimension / ScreenScale
+x * ((PanelNumber - PanelOffset) / PanelCount) 
+y * (Foil offset foil height)
 
-These then need to be renormalized. See [stackoverflow](https://stackoverflow.com/questions/21965353/how-to-calculate-coordinates-to-move-the-mouse-cursor-programmatically):
-x * 65535 / xScreenSize
-y * 65535 / yScreenSize
+These then need to be multiplied by 65535. See [stackoverflow](https://stackoverflow.com/questions/21965353/how-to-calculate-coordinates-to-move-the-mouse-cursor-programmatically):
+x * 65535 
+y * 65535 
 
 These values can then be send to the input stream via windows api in order to cause clicks to happen.
 Since we only have these values to go off of, we must determine wether to click and release, click and drag,

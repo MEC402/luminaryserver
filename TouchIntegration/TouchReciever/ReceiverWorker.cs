@@ -24,17 +24,17 @@ namespace TouchReceiver
         /// Starts the receiver service that will handle receiving TUIO events and 
         /// converting them to touch events
         /// </summary>
-        /// <param name="stoppingToken">Token that is used to determine whether the worker should stop</param>
+        /// <param name="cancellationToken">Token that is used to determine whether the worker should stop</param>
         /// <returns></returns>
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             try
             {
                 _logger.Log(LogLevel.Information, "Starting Receiver");
                 _service.Start();
-                while (!stoppingToken.IsCancellationRequested)
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    await Task.Delay(1000, stoppingToken);
+                    await Task.Delay(1000, cancellationToken);
                 }
             }
             catch (TaskCanceledException)
