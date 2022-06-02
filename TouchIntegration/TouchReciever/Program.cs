@@ -3,7 +3,7 @@ using TouchReceiver;
 /// <summary>
 /// Entry point to the Receiver Service application
 /// </summary>
-
+System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {

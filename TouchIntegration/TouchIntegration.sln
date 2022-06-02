@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TUIO_LIB", "TUIO11_NET-mast
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchReceiver", "TouchReciever\TouchReceiver.csproj", "{0AFD3451-E3D7-478D-9619-103F04CD33EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchTester", "TouchTester\TouchTester.csproj", "{416AC6AA-231B-4DCE-B6D1-C527C327ADE9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0AFD3451-E3D7-478D-9619-103F04CD33EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AFD3451-E3D7-478D-9619-103F04CD33EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AFD3451-E3D7-478D-9619-103F04CD33EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{416AC6AA-231B-4DCE-B6D1-C527C327ADE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{416AC6AA-231B-4DCE-B6D1-C527C327ADE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{416AC6AA-231B-4DCE-B6D1-C527C327ADE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{416AC6AA-231B-4DCE-B6D1-C527C327ADE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

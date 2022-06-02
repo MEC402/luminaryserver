@@ -101,12 +101,13 @@ namespace TouchProxy
     /// </summary>
     public class Listener : TuioListener
     {
-        private OSCTransmitter transmitter;
-        private int panelNumber;
+        private OSCTransmitter _transmitter;
+        private int _panelNumber;
+
         public Listener(int panelNumber, string receiverAddr, int receiverPort)
         {
-            this.panelNumber = panelNumber;
-            transmitter = new OSCTransmitter(receiverAddr, receiverPort);
+            _panelNumber = panelNumber;
+            _transmitter = new OSCTransmitter(receiverAddr, receiverPort);
         }
 
         public void addTuioBlob(TuioBlob tblb) { }
@@ -116,7 +117,7 @@ namespace TouchProxy
         public void removeTuioBlob(TuioBlob tblb) { }
         public void removeTuioCursor(TuioCursor tcur) { }
         public void removeTuioObject(TuioObject tobj) { }
-        public void updateTuioBlob(TuioBlob tblb) { }
+        public void updateTuioBlob(TuioBlob tblb) { Console.WriteLine("blobl"); }
 
         /// <summary>
         /// Handles when an update cursor event is called
@@ -124,13 +125,14 @@ namespace TouchProxy
         /// <param name="tcur">Object containing information about the cursor touch event</param>
         public void updateTuioCursor(TuioCursor tcur)
         {
+            Console.WriteLine("test");
             var packet = new OSCMessage("/tuio/2Dcur");
-            packet.Append(panelNumber);
+            packet.Append(_panelNumber);
             packet.Append(tcur.X);
             packet.Append(tcur.Y);            
-            transmitter.Send(packet);
+            _transmitter.Send(packet);
         }
-        public void updateTuioObject(TuioObject tobj) { }
+        public void updateTuioObject(TuioObject tobj) { Console.WriteLine("obj"); }
     }
 }
 
