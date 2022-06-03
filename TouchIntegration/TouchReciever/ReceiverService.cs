@@ -32,12 +32,30 @@ namespace TouchReceiver
         private int _offest;
         private int _holdNoise;
 
-        private OSCReceiver _receiver;
-        private bool _running = false;
-        private object _lock = new object();
+        private readonly object _runLock = new object();
+        private readonly object _clickLock = new object();
+        private volatile bool _running = false;
+        private bool _isRunning
+        {
+            get
+            {
+                lock (_runLock)
+                {
+                    return _running;
+                }
+            }
+            set
+            {
+                lock (_runLock)
+                {
+                    _running = value;
+                }
+            }
+        }
 
         private readonly Stopwatch _stopWatch = new Stopwatch();
-        private Point _lastTouchLocation = new Point(); 
+        private Point _lastTouchLocation = new Point();
+        private OSCReceiver _receiver;
         private bool _clicked = false;
         private Timer _timer;
 
@@ -66,7 +84,7 @@ namespace TouchReceiver
             Mouse.Move(x, y);
 
             Thread thread = new Thread(() => Receive());
-            _running = true;
+            _isRunning = true;
             _receiver.Connect();
             thread.Start();
         }
@@ -76,7 +94,7 @@ namespace TouchReceiver
         /// </summary>
         public void Stop()
         {
-            _running = false;
+            _isRunning = false;
             _timer.Dispose();
             _receiver.Close();
         }
@@ -86,7 +104,7 @@ namespace TouchReceiver
         /// </summary>
         private void Receive()
         {
-            while (_running)
+            while (_isRunning)
             {
                 try
                 {
@@ -139,9 +157,9 @@ namespace TouchReceiver
         /// <param name="y">Scaled Y coordinate of the touch location</param>
         private void HandleClick(int x, int y)
         {
-            var curPos = new Point(x, y);
-            lock (_lock)
+            lock (_clickLock)
             {
+                var curPos = new Point(x, y);
                 Mouse.Move(x, y);                
                 // Handle initial touch
                 if (!_clicked)
@@ -167,8 +185,8 @@ namespace TouchReceiver
                     }
                 }
                 _timer.Change(_experationTime, Timeout.Infinite);
+                _lastTouchLocation = curPos;
             }
-            _lastTouchLocation = curPos;
         }
 
         /// <summary>
@@ -178,7 +196,7 @@ namespace TouchReceiver
         /// <param name="source"></param>
         private void TimerExpired(object? source)
         {
-            lock (_lock)
+            lock (_clickLock)
             {
                 Mouse.Release(MouseButton.Left);
                 _clicked = false;

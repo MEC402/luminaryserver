@@ -15,7 +15,25 @@ namespace TouchProxy
     /// </summary>
     public class ProxyService
     {
+        private readonly object _runLock = new object();
         private volatile bool _running = false;
+        private bool _isRunning
+        {
+            get
+            {
+                lock( _runLock)
+                {
+                    return _running;
+                }
+            }
+            set
+            {
+                lock (_runLock)
+                {
+                    _running = value;
+                }
+            }
+        }  
         private TuioClient[] _clients;
         //private Thread[] _threads;
 
@@ -51,7 +69,7 @@ namespace TouchProxy
         //{
         //    var receiver = new OSCReceiver(receiverPort);
         //    receiver.Connect();
-        //    while (_running)
+        //    while (_isRunning)
         //    {
         //        try
         //        {
@@ -90,6 +108,7 @@ namespace TouchProxy
         }
         //public void Start()
         //{
+        //    _isRunning = true;
         //    foreach (var thread in _threads)
         //    {
         //        thread.Start();
@@ -109,7 +128,9 @@ namespace TouchProxy
         }
         //public void Stop()
         //{
-        //    _running = false;
+
+        //    _isRunning = false;
+
         //}
 
 
