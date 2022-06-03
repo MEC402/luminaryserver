@@ -1,4 +1,5 @@
 ﻿using OSC.NET;
+using System.Collections;
 using System.Net;
 using System.Text.Json;
 using TUIO;
@@ -14,7 +15,9 @@ namespace TouchProxy
     /// </summary>
     public class ProxyService
     {
+        private volatile bool _running = false;
         private TuioClient[] _clients;
+        //private Thread[] _threads;
 
         /// <summary>
         /// Constructor for the Service object
@@ -33,6 +36,47 @@ namespace TouchProxy
             }
         }
 
+        //public ProxyService(int a)
+        //{
+        //    var portMap = ReadConfig();
+        //    var keys = portMap.Keys.ToArray();
+        //    _threads = new Thread[keys.Length];
+        //    for (int i = 0; i < keys.Length; i++)
+        //    {
+        //        _threads[i] = new Thread(() => Listen(i + 1, portMap[keys[i]].Address, portMap[keys[i]].Port);
+        //    }
+        //}
+
+        //private void Listen(int panelNumber, string receiverAddress, int receiverPort)
+        //{
+        //    var receiver = new OSCReceiver(receiverPort);
+        //    receiver.Connect();
+        //    while (_running)
+        //    {
+        //        try
+        //        {
+        //            OSCPacket packet = receiver.Receive();
+        //            if (packet != null)
+        //            {
+        //                if (packet.IsBundle())
+        //                {
+        //                    ArrayList messages = packet.Values;
+        //                    for (int i = 0; i < messages.Count; i++)
+        //                    {
+        //                       // processMessage((OSCMessage)messages[i]);
+        //                    }
+        //                }
+        //                //else processMessage((OSCMessage)packet);
+        //                Console.WriteLine(packet.Values);
+        //            }
+        //            else Console.WriteLine("null packet");
+        //        }
+        //        catch (Exception e) { Console.WriteLine(e.Message); }
+        //    }
+        //    receiver.Close();
+        //}
+
+
         /// <summary>
         /// Connects and starts the TuioClients when
         /// the service is started
@@ -44,6 +88,13 @@ namespace TouchProxy
                 client.connect();
             }
         }
+        //public void Start()
+        //{
+        //    foreach (var thread in _threads)
+        //    {
+        //        thread.Start();
+        //    }
+        //}
 
         /// <summary>
         /// Disconnects and stops the TuioClients when
@@ -56,6 +107,11 @@ namespace TouchProxy
                 client.disconnect();
             }
         }
+        //public void Stop()
+        //{
+        //    _running = false;
+        //}
+
 
         /// <summary>
         /// Reads the config.json file and turns it into a mapping of port to handler ipAddress,port
