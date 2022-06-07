@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -76,22 +77,7 @@ namespace TouchReceiver
         /// <param name="y">Position along the y axis to move the mouse to</param>
         public static void Move(int x, int y)
         {
-            Input[] inputs = new Input[] {
-                new Input
-                {
-                    Type = (int) InputType.Mouse,
-                    Union = new InputUnion
-                    {
-                        mi = new MouseInput
-                        {
-                            dx = x,
-                            dy = y,
-                            dwFlags = MouseEventF.Move | MouseEventF.Absolute,
-                        }
-                    }
-                }
-            };
-            SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Input)));
+            SetCursorPos(x, y);
         }
 
         /// <summary>
@@ -104,5 +90,29 @@ namespace TouchReceiver
         /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true)]
         private static extern uint SendInput(uint numInputs, Input[] inputs, int size);
+
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetCursorPos(int x, int y);
+
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct PointInter
+        {
+            public int X;
+            public int Y;
+            public static explicit operator Point(PointInter point) => new Point(point.X, point.Y);
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool GetCursorPos(out PointInter lpPoint);
+
+        // For your convenience
+        public static Point GetCursorPosition()
+        {
+            PointInter lpPoint;
+            GetCursorPos(out lpPoint);
+            return (Point)lpPoint;
+        }
     }
 }

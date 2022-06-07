@@ -175,7 +175,14 @@ namespace TUIO
                             ArrayList messages = packet.Values;
                             for (int i = 0; i < messages.Count; i++)
                             {
-                                processMessage((OSCMessage)messages[i]);
+                                try
+                                {
+                                    processMessage((OSCMessage)messages[i]);
+                                } catch (Exception e)
+                                {
+                                    var a = e;
+                                }
+                                
                             }
                         }
                         else processMessage((OSCMessage)packet);
@@ -197,10 +204,11 @@ namespace TUIO
         {
             string address = message.Address;
             ArrayList args = message.Values;
-            string command = (string)args[0];
+
 
             if (address == "/tuio/2Dobj")
             {
+                string command = (string)args[0];
                 if (command == "set")
                 {
 
@@ -349,7 +357,7 @@ namespace TUIO
             }
             else if (address == "/tuio/2Dcur")
             {
-
+                string command = (string)args[0];
                 if (command == "set")
                 {
 
@@ -541,8 +549,8 @@ namespace TUIO
             } 
 			else if (address == "/tuio/2Dblb")
 			{
-
-				if (command == "set")
+                string command = (string)args[0];
+                if (command == "set")
 				{
 
 					long s_id = (int)args[1];

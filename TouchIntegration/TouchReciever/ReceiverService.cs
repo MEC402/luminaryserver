@@ -31,6 +31,14 @@ namespace TouchReceiver
         private int _holdTime;
         private int _offest;
         private int _holdNoise;
+        private int _xScreenDimension = Screen.GetXScreenResolution();
+        private int _yScreenDimension = Screen.GetYScreenResolution();
+        private decimal _xScale;
+        //private decimal _yScale = (decimal) 66.0/ (decimal) 96.0;
+        private decimal _yScale = (decimal)66.0 / (decimal)96.0;
+
+
+
 
         private readonly object _runLock = new object();
         private readonly object _clickLock = new object();
@@ -73,6 +81,10 @@ namespace TouchReceiver
             _offest = config.PanelOffset;
             _panelCount = config.PanelCount;
             _holdNoise = config.HoldNoise;
+            _xScale = (decimal) _xScreenDimension /_panelCount;
+
+            Console.WriteLine($"Dimensions {_xScreenDimension}x{_yScreenDimension}");
+            Console.WriteLine($"Scales {_xScale}, {_yScale}");
         }
 
         /// <summary>
@@ -139,13 +151,13 @@ namespace TouchReceiver
             } else if (args[2] == null || args[2] is not float)
             {
                 return;
-            } 
+            }
 
             int panelNumber = (int?)args[0] ?? -1;
             float x = (float?)args[1] ?? 0;
             float y = (float?)args[2] ?? 0;
 
-            ScaleCoordinates(panelNumber, x, y, out int sX, out int sY);
+            ScaleCoordinates(panelNumber, (decimal) x, (decimal) y, out int sX, out int sY);
             HandleClick(sX, sY);
         }
 
@@ -160,32 +172,34 @@ namespace TouchReceiver
             lock (_clickLock)
             {
                 var curPos = new Point(x, y);
-                Mouse.Move(x, y);                
+                Mouse.Move(x, y);
                 // Handle initial touch
-                if (!_clicked)
-                {
-                    Mouse.Click(MouseButton.Left);
-                    _clicked = true;
-                    _stopWatch.Start();
-                } else // Handle holding/dragging
-                {
-                    // If within distance assume holding
-                    if(PointsWithinDistance(curPos, _lastTouchLocation, _holdNoise))
-                    {
-                        // If held for enough time, right click
-                        if(_stopWatch.ElapsedMilliseconds > _holdTime)
-                        {
-                            Mouse.Click(MouseButton.Right);
-                            Mouse.Release(MouseButton.Right);
-                            _stopWatch.Reset();
-                        }
-                    } else // Not within distance assume dragging
-                    {
-                        _stopWatch.Restart();
-                    }
-                }
-                _timer.Change(_experationTime, Timeout.Infinite);
-                _lastTouchLocation = curPos;
+                //if (!_clicked)
+                //{
+                //    Mouse.Click(MouseButton.Left);
+                //    _clicked = true;
+                //    _stopWatch.Start();
+                //}
+                //else // Handle holding/dragging
+                //{
+                //    // If within distance assume holding
+                //    if (PointsWithinDistance(curPos, _lastTouchLocation, _holdNoise))
+                //    {
+                //        // If held for enough time, right click
+                //        if (_stopWatch.ElapsedMilliseconds > _holdTime)
+                //        {
+                //            Mouse.Click(MouseButton.Right);
+                //            Mouse.Release(MouseButton.Right);
+                //            _stopWatch.Reset();
+                //        }
+                //    }
+                //    else // Not within distance assume dragging
+                //    {
+                //        _stopWatch.Restart();
+                //    }
+                //}
+                //_timer.Change(_experationTime, Timeout.Infinite);
+                //_lastTouchLocation = curPos;   
             }
         }
 
@@ -229,18 +243,38 @@ namespace TouchReceiver
         /// <param name="inY">Normalized y coordinate from the proxy</param>
         /// <param name="outX">Scaled x coordinate</param>
         /// <param name="outY">Scaled y coordinate</param>
-        private void ScaleCoordinates(int panelNumber, double inX, double inY, out int outX, out int outY)
+        private void ScaleCoordinates(int panelNumber, decimal inX, decimal inY, out int outX, out int outY)
         {
-            var xScreenDimension = Screen.GetXScreenResolution();
-            var yScreenDimension = Screen.GetYScreenResolution();
+            // double xPanelDimension = _xScreenDimension / (double) _panelCount;
+            Console.WriteLine($"inX -> {inX}, inY -> {inY}");
+            decimal x = inX * _xScale + _xScale * panelNumber - (decimal) Math.Pow((double)inX, 2) * 30;
 
-            //inX *= (panelNumber - offest) / panelCount;
-            //inY *= 1234;
-            //inY += -344;
 
+
+            decimal y = inY * _yScale * _yScreenDimension ;
+            Console.WriteLine($"x -> {x}, y -> {y}");
+            Mouse.GetCursorPos(out Mouse.PointInter point);
+            Console.WriteLine(point.Y);
+
+            //double yPanelScale = 66.0/96.0;
+            //double botDeadZone = 28.0 / 96.0;
+
+            //Console.WriteLine(_xScreenDimension);
+            //inX = (inX * xPanelDimension + panelNumber * xPanelDimension) / _xScreenDimension;
+            ////inY = (inY * (yScreenDimension - yScreenDimension * deadZone)) / yScreenDimension * yPanelScale;
+            //double testY = inY - botDeadZone + (0.01 * inY);
+            //double testX = inX + (-0.005 * inX/2);
+
+            //Test1, red, -0.01
+            //Test2, yellow, 0.02
+            //double testY = inY * yPanelScale;
+            //Console.WriteLine($"{inY} scales to {testY}");
+            //Console.WriteLine($"Input to Screen Ratio {inY*_yScreenDimension / testY*(_yScreenDimension - (_yScreenDimension * botDeadZone))}");
+            ////inY = inY / (yPanelScale);
+            //inY = inY * ;
             // Convert
-            outX = (int)Math.Floor(inX * 65535);
-            outY = (int)Math.Floor(inY * 65535);
+            outX = (int)Math.Round(x);
+            outY = (int)Math.Round(y);
         }
 
         /// <summary>

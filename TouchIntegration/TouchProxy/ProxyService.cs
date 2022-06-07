@@ -48,7 +48,7 @@ namespace TouchProxy
             for (int i = 0; i < keys.Length; i++)
             {
                 var client = new TuioClient(keys[i]);
-                var listener = new Listener(i+1, portMap[keys[i]].Address, portMap[keys[i]].Port);
+                var listener = new Listener(i, portMap[keys[i]].Address, portMap[keys[i]].Port);
                 client.addTuioListener(listener);
                 _clients[i] = client;
             }
@@ -202,7 +202,6 @@ namespace TouchProxy
         /// <param name="tcur">Object containing information about the cursor touch event</param>
         public void updateTuioCursor(TuioCursor tcur)
         {
-            Console.WriteLine("test");
             var packet = new OSCMessage("/tuio/2Dcur");
             packet.Append(_panelNumber);
             packet.Append(tcur.X);

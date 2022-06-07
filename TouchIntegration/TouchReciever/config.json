@@ -2,7 +2,7 @@
   "ReceiverPort": 3000,
   "PanelCount": 6,
   "PanelOffset": 0,
-  "ExpirationTime": 10,
+  "ExpirationTime": 100,
   "HoldTime": 1000,
-  "HoldNoise":  50
+  "HoldNoise":  5000
 }
