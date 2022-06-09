@@ -33,9 +33,8 @@ namespace TouchReceiver
         private int _holdNoise;
         private int _xScreenDimension = Screen.GetXScreenResolution();
         private int _yScreenDimension = Screen.GetYScreenResolution();
-        private decimal _xScale;
-        //private decimal _yScale = (decimal) 66.0/ (decimal) 96.0;
-        private decimal _yScale = (decimal)66.0 / (decimal)96.0;
+        private decimal _xPanelDimesion;
+        private decimal _yScale = (decimal) 66.0/ (decimal) 96.0;
 
 
 
@@ -81,10 +80,10 @@ namespace TouchReceiver
             _offest = config.PanelOffset;
             _panelCount = config.PanelCount;
             _holdNoise = config.HoldNoise;
-            _xScale = (decimal) _xScreenDimension /_panelCount;
+            _xPanelDimesion = (decimal) _xScreenDimension /_panelCount;
 
             Console.WriteLine($"Dimensions {_xScreenDimension}x{_yScreenDimension}");
-            Console.WriteLine($"Scales {_xScale}, {_yScale}");
+            Console.WriteLine($"Scales {_xPanelDimesion}, {_yScale}");
         }
 
         /// <summary>
@@ -245,16 +244,22 @@ namespace TouchReceiver
         /// <param name="outY">Scaled y coordinate</param>
         private void ScaleCoordinates(int panelNumber, decimal inX, decimal inY, out int outX, out int outY)
         {
-            // double xPanelDimension = _xScreenDimension / (double) _panelCount;
-            Console.WriteLine($"inX -> {inX}, inY -> {inY}");
-            decimal x = inX * _xScale + _xScale * panelNumber - (decimal) Math.Pow((double)inX, 2) * 30;
 
 
+            decimal x = inX * _xPanelDimesion + _xPanelDimesion * panelNumber - (decimal)Math.Pow((double)inX,2) * 30M;
 
-            decimal y = inY * _yScale * _yScreenDimension ;
-            Console.WriteLine($"x -> {x}, y -> {y}");
+
+            decimal oldMin = .25M;
+            decimal yOldRange = 1.0M - oldMin;
+            decimal yNewRange = .705M - 0.0M;
+            decimal yScaled = (((inY - oldMin) * yNewRange) / yOldRange) + 0.0M;
+            
+
+
+            decimal y = yScaled * _yScreenDimension;
+            Console.WriteLine($"inX -> {inX}, outX -> {x}");
             Mouse.GetCursorPos(out Mouse.PointInter point);
-            Console.WriteLine(point.Y);
+            Console.WriteLine(point.X);
 
             //double yPanelScale = 66.0/96.0;
             //double botDeadZone = 28.0 / 96.0;
