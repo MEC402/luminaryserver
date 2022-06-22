@@ -1,8 +1,81 @@
 ﻿{
   "ReceiverPort": 3000,
-  "PanelCount": 6,
   "PanelOffset": 0,
   "ExpirationTime": 100,
   "HoldTime": 1000,
-  "HoldNoise":  5000
+  "HoldNoise": 10,
+  "PanelBounds": {
+    "0": {
+      "Start": 0,
+      "Stop": 945
+    },
+    "1": {
+      "Start": 975,
+      "Stop": 1900
+    },
+    "2": {
+      "Start": 1935,
+      "Stop": 2860
+    },
+    "3": {
+      "Start": 2890,
+      "Stop": 3820
+    },
+    "4": {
+      "Start": 3875,
+      "Stop": 4815
+    },
+    "5": {
+      "Start": 4830,
+      "Stop": 5770
+    },
+    "6": {
+      "Start": 0,
+      "Stop": 670
+    },
+    "7": {
+      "Start": 710,
+      "Stop": 1370
+    },
+    "8": {
+      "Start": 1395,
+      "Stop": 2065
+    },
+    "9": {
+      "Start": 2075,
+      "Stop": 2735
+    },
+    "10": {
+      "Start": 2785,
+      "Stop": 3445
+    },
+    "11": {
+      "Start": 20,
+      "Stop": 685
+    },
+    "12": {
+      "Start": 690,
+      "Stop": 1365
+    },
+    "13": {
+      "Start": 1385,
+      "Stop": 2055
+    },
+    "14": {
+      "Start": 2085,
+      "Stop": 2750
+    },
+    "15": {
+      "Start": 2775,
+      "Stop": 3440
+    },
+    "16": {
+      "Start": 3460,
+      "Stop": 4130
+    },
+    "17": {
+      "Start": 4155,
+      "Stop": 4820
+    }
+  }
 }
